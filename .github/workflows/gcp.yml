@@ -14,7 +14,7 @@
         - name: Checkout
           uses: actions/checkout@v2
     
-        - uses: google-github-actions/setup-gcloud@main
+        - uses: google-github-actions/setup-gcloud@master
           with:
             service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
             project_id: ${{ env.PROJECT_ID }}
@@ -31,7 +31,7 @@
         - name: Configure Docker Client
           run: |-
             gcloud auth configure-docker --quiet
-            gcloud auth configure-docker us-west2-docker.pkg.dev --quiet
+            gcloud auth configure-docker us-central1-docker.pkg.devv --quiet
     
         - name: Push Docker Image to Container Registry (GCR)
           env:
@@ -46,7 +46,7 @@
           env:
             GIT_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
           run: |-
-            docker tag $IMAGE_NAME:latest us-west2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:latest
-            docker tag $IMAGE_NAME:latest us-west2-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:$GIT_TAG
+            docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:latest
+            docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:$GIT_TAG
             docker push us-central1-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:latest
             docker push us-central1-docker.pkg.dev/$PROJECT_ID/images/$IMAGE_NAME:$GIT_TAG
